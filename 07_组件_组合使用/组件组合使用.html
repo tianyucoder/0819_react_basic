@@ -11,75 +11,58 @@
   <script type="text/javascript" src="../js/react.development.js"></script>
   <script type="text/javascript" src="../js/react-dom.development.js"></script>
   <script type="text/javascript" src="../js/babel.min.js"></script>
-  <script type="text/javascript" src="../js/prop-types.js"></script>
+	<script type="text/javascript" src="../js/prop-types.js"></script>
+	
+	<script type="text/babel" >
+
+	class App extends React.Component{
+		state = {todos:['吃饭','睡觉','谈恋爱']}
+		render(){
+			return (
+				<div>
+					<h1>Simple TODO List</h1>
+					<Add count={this.state.todos.length}/>
+					<List todos={this.state.todos}/>
+				</div>
+			)
+		}
+	}
+
+	class Add extends React.Component{
+		handleAdd = ()=>{
+			//1.获取用户输入
+			console.log(this.refs.input.value);
+			//2.把用户的输入放入state中
+		}
+		render(){
+			const {count} = this.props
+			return (
+				<div>
+					<input type="text" ref="input"/>
+					<button onClick={this.handleAdd}>Add #{count}</button>	
+				</div>
+			)
+		}
+	}
+
+	class List extends React.Component{
+		render(){
+			const {todos} = this.props
+			return (
+				<ul>
+					{
+					  todos.map((item,index)=>{
+							return <li key={index}>{item}</li>
+						})
+					}
+				</ul>
+			)
+		}
+	}
+
+	ReactDOM.render(<App/>,document.getElementById('example'))
+	
+	</script>
   
-  <script type="text/babel">
-    class App extends React.Component{
-
-      state = {
-        todos:['吃饭','睡觉','打代码']
-      }
-
-      addTodo = (data)=>{
-        const {todos} = this.state
-        todos.unshift(data)
-        this.setState({todos})
-      }
-
-      render(){
-        const {todos} = this.state
-        return (
-          <div>
-            <h2>Simple todo List</h2>
-            <Add addTodo={this.addTodo} count={todos.length}/>
-            <List todos={todos}/>
-          </div>
-        )
-      }
-    }
-
-    class Add extends React.Component{
-
-      static propTypes = {
-        addTodo:PropTypes.func.isRequired,
-        count:PropTypes.number.isRequired,
-      }
-      
-      add = ()=>{
-        const {addTodo} = this.props
-        addTodo(this.refs.thing.value)
-        this.refs.thing.value = ''
-      }
-
-      render(){
-        const {count} = this.props
-        return (
-          <div>
-            <input type="text" ref="thing"/> <button onClick={this.add}>Add #{count}</button>
-          </div>
-        )
-      }
-    }
-    
-    class List extends React.Component{
-      static propTypes = {
-        todos:PropTypes.array.isRequired,
-      }
-      render(){
-        const {todos} = this.props
-        return (
-          <ul>
-            {
-              todos.map((item,index)=>{
-                return <li key={index}>{item}</li>
-              })
-            }
-          </ul>
-        )
-      }
-    }
-    
-    ReactDOM.render(<App/>,document.getElementById('example'))
-  </script>
 </body>
 </html>
