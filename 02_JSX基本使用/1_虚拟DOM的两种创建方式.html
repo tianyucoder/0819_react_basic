@@ -2,7 +2,12 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>虚拟DOM的两种创建方式</title>
+	<title>虚拟DOM的两种创建方式</title>
+	<style>
+		.red{
+			color: red;
+		}
+	</style>
 </head>
 <body>
   <div id="test1"></div>
@@ -13,7 +18,43 @@
   <!-- 引入react-dom，用于支持react操作DOM -->
   <script type="text/javascript" src="../js/react-dom.development.js"></script>
   <!-- 引入babel将将jsx翻译为js -->
-  <script type="text/javascript" src="../js/babel.min.js"></script>
-  
+	<script type="text/javascript" src="../js/babel.min.js"></script>
+	
+	<!-- 使用js创建一个虚拟DOM(不使用jsx) -->
+	<script type="text/javascript" >
+		let myID = 'aTGuIgU'
+		let myData = 'HeLlO,AtgUiGu'
+		//1.创建虚拟DOM
+		let vDOM = React.createElement('h2',{id:myID.toLowerCase()},React.createElement('span',{},myData.toLowerCase()))
+		//2.渲染虚拟DOM到页面
+		ReactDOM.render(vDOM,document.getElementById('test1'))
+		let trueDOM = document.getElementById('test1')
+		//debugger;
+	</script>
+
+	<!-- 使用jsx创建一个虚拟DOM -->
+	<script type="text/babel" >
+	//1.创建虚拟DOM
+	let vDOM2 = (
+		<div>
+			<h2 id={myID.toUpperCase()}>
+				<span className="red">{myData.toUpperCase()}</span>
+			</h2>
+			<h2 id={myID.toUpperCase()}>
+				<span style={{color:'blue'}}>{myData.toUpperCase()}</span>
+			</h2>
+		</div>
+	)
+	//2.渲染虚拟DOM到页面
+	ReactDOM.render(vDOM2,document.getElementById('test2'))
+	console.log(typeof vDOM2);
+	</script>
+	<!-- 
+		虚拟DOM与真实DOM的区别：
+			1.虚拟DOM轻，真实DOM比较重
+			2.真实DOM页面真正显示的东西，虚拟DOM与页面真正显示的东西一一对应
+			3.虚拟DOM到底是什么？就是js中的一个一般对象（Object对象）
+	 -->
+
 </body>
 </html>
