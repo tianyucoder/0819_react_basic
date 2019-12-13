@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>refs与事件处理</title>
+</head>
+<body>
+<br>
+  <div id="example"></div>
+
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+	<script type="text/javascript" src="../js/babel.min.js"></script>
+	
+	<script type="text/babel" >
+
+
+	class MyComponent extends React.Component {
+
+		//创建一个ref容器，注意：只能保存一个ref声明的标签（专人专用）
+		myRef = React.createRef()
+
+		handleClick = ()=>{
+			//弹窗展示
+			alert(this.myRef.current.value);
+		}
+
+		handleBlur = (event)=>{
+			alert(event.target.value)
+		}
+		render(){
+			return (
+				<div>
+					<input type="text" ref={this.myRef}/>&nbsp;
+					<button ref={this.myRef} onClick={this.handleClick}>点我提示数据</button>&nbsp;
+					<input onBlur={this.handleBlur} type="text" placeholder="失去焦点提示数据"/>
+				</div>
+			)
+		}
+	}
+	ReactDOM.render(<MyComponent/>,document.getElementById('example'))
+	
+	</script>
+
+
+<script type="text/javascript" >
+
+	let a = (input)=>{this.input = input}
+
+</script>
+
+</body>
+</html>
