@@ -20,18 +20,18 @@
 	<!-- 第一种方式：工厂函数创建组件（简单组件） -->
 	<script type="text/babel" >
 		//定义一个工厂函数，用于创建组件
-		function Peiqi (){//Peiqi这个函数经过babel的编译，在函数内部开启了严格模式，禁止this指向window
+		function Demo1 (){//Peiqi这个函数经过babel的编译，在函数内部开启了严格模式，禁止this指向window
 			console.log(this); 
 			return <h2>我是工厂函数创建的组件（简单组件用我）</h2>
 		}
 		//下面这行代码，底层触发了：1.调用了Peiqi工厂函数 2.将返回的虚拟DOM渲染到页面
-		ReactDOM.render(<Peiqi/>,document.getElementById('example1'))
+		ReactDOM.render(<Demo1/>,document.getElementById('example1'))
 	
 	</script>
 
 	<!-- 第二种方式：ES6类创建组件（复杂组件） -->
 	<script type="text/babel" >
-		class Demo extends React.Component{
+		class Demo2 extends React.Component{
 			//重写从父类继承的render
 			render(){
 				console.log(this);
@@ -39,8 +39,7 @@
 			}
 		}
 		//下面这行代码，底层触发了：1.实例化了一个Demo对象 2.通过该实例调用了render方法 3.将返回的虚拟DOM渲染到页面
-		ReactDOM.render(<Demo/>,document.getElementById('example2'))
-		ReactDOM.render(<Demo/>,document.getElementById('example3'))
+		ReactDOM.render(<Demo2/>,document.getElementById('example2'))
 	</script>
 
 </body>

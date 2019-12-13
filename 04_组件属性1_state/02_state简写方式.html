@@ -7,15 +7,39 @@
 <body>
 
 <div id="example"></div>
-<div id="example2"></div>
 
   <!-- 引入react核心库 -->
   <script type="text/javascript" src="../js/react.development.js"></script>
   <!-- 引入react-dom，用于支持react操作DOM -->
   <script type="text/javascript" src="../js/react-dom.development.js"></script>
   <!-- 引入babel将将jsx翻译为js -->
-  <script type="text/javascript" src="../js/babel.min.js"></script>
+	<script type="text/javascript" src="../js/babel.min.js"></script>
+	
+	<script type="text/babel" >
 
+		//定义一个组件
+		class Weather extends React.Component{
+
+			state = {isHot:false,arr:[1,2,3]}
+
+			//React底层将程序员所有在类中，自定义的方法中的this全部改成了undefined
+			handleClick = ()=>{
+				//state中的数据不可以直接修改，如下代码就是直接修改
+				//this.peiqi.isHot = !this.peiqi.isHot
+				let {isHot} = this.state //结构赋值，获取原状态中的isHot
+				this.setState({isHot:!isHot}) ////调用this.setState去更新状态
+			}
+
+			//重写父类的render，render属于内置的，所以render中的this是组件的实例对象
+			render(){	
+				console.log('----render-----'); //render调用的次数是：1+n
+				return <h1 onClick={this.handleClick}>今天天气很{this.state.isHot ? '炎热' : '凉爽'}</h1>
+			}
+		}
+		ReactDOM.render(<Weather/>,document.getElementById('example'))
+	
+	</script>
+  
 </body>
 </html>
 
