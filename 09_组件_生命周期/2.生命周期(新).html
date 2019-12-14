@@ -14,22 +14,61 @@
 <!--引入babel-->
 <script type="text/javascript" src="../js/babel.min.js"></script>
 
-<!-- 
-
-
- -->
 
 <script type="text/babel">
 
+/* 
+	生命周期流程:
+			a.	初始化阶段:  由ReactDOM.render()触发
+						* constructor()
+						* static getDerivedStateFromProps() 
+						* render()
+						* componentDidMount()
+			b.	更新阶段 由组件内部this.setSate()或父组件重新render触发
+						* static getDerivedStateFromProps()
+						* shouldComponentUpdate()
+						* render()
+						* getSnapshotBeforeUpdate()
+						* componentDidUpdate()
+			c.	移除组件:  由ReactDOM.unmountComponentAtNode(containerDom)触发
+						* componentWillUnmount()
+
+
+*/
+
   class App extends React.Component{
 
-		UNSAFE_componentWillMount(){
-			console.log('---componentWillMount---');
+		constructor(a){
+			super(a)
+			console.log('---constructor---');
+			this.state = {data:'atguigu'}
 		}
+
+		demo = ()=>{
+			this.setState({data:'atguigu!'})
+		}
+
+		getSnapshotBeforeUpdate(props,preState){
+			console.log('---getSnapshotBeforeUpdate---',props,preState);
+			return '你猜猜看，我返回给谁了'
+		}
+
+		componentDidUpdate(props,preState,data){
+			console.log('---componentDidUpdate---',props,preState,data);
+		}
+
+		/* UNSAFE_componentWillMount(){
+			console.log('---componentWillMount---');
+		} */
+
+		/* static getDerivedStateFromProps(props,state){
+			console.log('---getDerivedStateFromProps---',props,state);
+			return {data:props.name}
+		} */
 
     render(){
       console.log('--render--');
-      return <h1>Hello,App</h1>
+      return <h1 onClick={this.demo}>Hello,{this.state.data}</h1>
 		}
 		
 		componentDidMount(){
@@ -37,7 +76,7 @@
 		}
   }
 
-  ReactDOM.render(<App/>,document.getElementById('example'))
+  ReactDOM.render(<App name="0819" age="18"/>,document.getElementById('example'))
 </script>
 
 <!-- 
