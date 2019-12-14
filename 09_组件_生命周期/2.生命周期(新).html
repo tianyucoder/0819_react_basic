@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>10_ComponentLife</title>
+</head>
+<body>
+<div id="example"></div>
+
+<!--引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+<!--引入操作react操作DOM库-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<!--引入babel-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 
+
+
+ -->
+
+<script type="text/babel">
+
+  class App extends React.Component{
+
+    state = {data:'React'}
+
+    componentDidMount(){
+      console.log('--componentDidMount--');
+      setTimeout(()=>{
+        this.setState({data:'0719'})
+      },2000)
+    }
+
+    componentDidUpdate(props,state,data){
+      console.log('--componentDidUpdate--',props,state,data);
+    }
+
+    //getDerivedStateFromProps钩子用于取代：componentWillMount、componentWillUpdate
+    static getDerivedStateFromProps(props,state){
+      console.log('--getDerivedStateFromProps--',props,state);
+      //return {data:props.name}
+      return props
+    }
+
+    getSnapshotBeforeUpdate(props,state){
+      console.log('--getSnapshotBeforeUpdate--',props,state);
+      return 'peiqi'
+    }
+
+
+    render(){
+      console.log('--render--');
+      return <h1>Hello,{this.state.data}</h1>
+    }
+  }
+
+  ReactDOM.render(<App name="kobe"/>,document.getElementById('example'))
+</script>
+
+<!-- 
+
+  1.【初始化】
+        触发条件：ReactDOM.render(<MyComponent/>)
+          constructor()
+          static getDerivedStateFromProps(Props, prevState) ----- 【新增】
+          render():提供虚拟DOM，可能会调用多次(1+n)。
+          componentDidMount()：启动定时器、发送Ajax请求、只执行一次。
+          
+    2.【更新】
+        触发条件：this.setState({})
+          static getDerivedStateFromProps(Props, prevState)
+          shouldComponentUpdate()
+          render()
+          getSnapshotBeforeUpdate() ---- 【新增】
+          componentDidUpdate()
+          
+    3.【卸载】
+        触发条件：ReactDOM.unmountComponentAtNode()
+        componentWillUnmount()：做收尾工作，例如：清除定时器等，该回调只会执行一次。
+
+ -->
+</body>
+</html>
