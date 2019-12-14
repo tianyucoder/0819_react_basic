@@ -24,13 +24,17 @@
 
 	 class Demo extends React.Component{
 
+		//构造器
 		constructor(pramars){
 			console.log('---constructor---');
 			super(pramars)
 			this.state = {opacity:1}
 		}
-
-		//组件被挂在到页面上后，会除法该函数执行componentDidMount
+		//组件将要挂在
+		componentWillMount(){
+			console.log('---componentWillMount---');
+		}
+		//组件已经挂在
 		componentDidMount(){
 			console.log('--componentDidMount--');
 			this.id = setInterval(() => {
@@ -40,19 +44,15 @@
 				this.setState({opacity})
 			}, 200);
 		}
-
-		componentWillMount(){
-			console.log('---componentWillMount---');
-		}
-
-		componentDidUpdate(){
-			console.log('---componentDidUpdate---');
-		}
-
+		//组件将要更新
 		componentWillUpdate(){
 			console.log('---componentWillUpdate--');
 		}
-
+		//组件已经更新
+		componentDidUpdate(){
+			console.log('---componentDidUpdate---');
+		}
+		//组件将要卸载
 		componentWillUnmount(){
 			console.log('---componentWillUnmount---');
 			clearInterval(this.id)
@@ -62,7 +62,7 @@
 			ReactDOM.unmountComponentAtNode(document.getElementById('example'))
 		}
 
-		 render(){
+	  render(){
 			 console.log('---render---');
 			 const {opacity} = this.state
 			 return (
