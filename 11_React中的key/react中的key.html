@@ -20,8 +20,8 @@
       2). 为什么列表的key尽量不要用index?
       
    1. 虚拟DOM的key的作用?
-      1). 简单的说: key是虚拟DOM对象的标识, 在更新显示时key起着极其重要的作用
-      2). 详细的说: 当状态数据发生变化时，React会生成新的虚拟DOM, 随后React将之前的旧虚拟DOM与新的虚拟DOM进行diff比较
+      1). 简单的说: key是虚拟DOM对象的标识, 在更新显示时key起着极其重要的作用。
+      2). 详细的说: 当状态数据发生变化时，React会根据新的state生成新的虚拟DOM, 随后React将之前的旧虚拟DOM与新的虚拟DOM进行diff比较
           
           a. 旧的虚拟DOM中【找到了】与新的虚拟DOM相同的key
                 --若虚拟DOM没变, 直接使用原来的真实DOM，不刷新页面的真实DOM
@@ -39,30 +39,67 @@
         使用数据的唯一标识数据作为key, 比如id属性值
    */
 
+	 /* 
+			 "慢动作回放"
+				一、使用index作为key
+					初始状态：
+								{id: 1, name: '小张', age: 13},
+								{id: 2, name: '小李', age: 12}
+					初始的虚拟DOM：
+								<li key=0>1--小张--13--<input /></li>
+								<li key=1>2--小李--12--<input /></li>
+					新状态：
+								{id: 3, name: '小王', age: 14}	
+								{id: 1, name: '小张', age: 13},
+								{id: 2, name: '小李', age: 12}
+					新的虚拟DOM
+								<li key=0>3--小王--14--<input /></li>
+								<li key=1>1--小张--13--<input /></li>
+								<li key=2>2--小李--12--<input /></li>
+
+			二、使用id作为key
+					初始状态：
+								{id: 1, name: '小张', age: 13},
+								{id: 2, name: '小李', age: 12}
+					初始的虚拟DOM：
+								<li key=1>1--小张--13--<input /></li>
+								<li key=2>2--小李--12--<input /></li>
+					新状态：
+								{id: 3, name: '小王', age: 14}	
+								{id: 1, name: '小张', age: 13},
+								{id: 2, name: '小李', age: 12}
+					新的虚拟DOM
+								<li key=3>3--小王--14--<input /></li>
+								<li key=1>1--小张--13--<input /></li>
+								<li key=2>2--小李--12--<input /></li>
+        
+        
+	 
+	 */
   class PersonList extends React.Component {
 
     state = {
       persons: [
-        {id: 1, name: '小张', age: 13},
-        {id: 2, name: '小李', age: 12}
+        { id:1, name: '小张', age: 13},
+        { id:2, name: '小李', age: 12}
       ]
     }
 
 		//添加一个小王
     add = () => {
-      const {persons} = this.state
+      let persons = [...this.state.persons]
       persons.unshift({id: persons.length + 1, name: '小王', age: 14})
       this.setState({persons})
     }
 		//移除列表中的第一个人
     remove = () => {
-      const {persons} = this.state
+      let persons = [...this.state.persons]
       persons.shift()
       this.setState({persons})
     }
 
     render() {
-      const persons = this.state.persons
+      const {persons} = this.state
       return (
         <div>
           <div>
@@ -70,11 +107,18 @@
             &nbsp;
             <button onClick={this.remove}>移除第一个</button>
             &nbsp;
-          </div>
-          <br/>
-          <br/>
-          
-          <h2>使用id作为key</h2>
+					</div>
+					<br/>
+					<br/>
+          <h2>使用index作为key(可能会引发一些问题)</h2>
+          <ul>
+            {
+              persons.map((item, index) => {return <li key={index}>{item.id}--{item.name}--{item.age}--<input /></li>})
+            }
+					</ul>
+					<br/>
+					<br/>
+					<h2>使用id作为key</h2>
           <ul>
             {
               persons.map((item) => {return <li key={item.id}>{item.id}--{item.name}--{item.age}--<input type="text"/></li>})
@@ -82,21 +126,12 @@
           </ul>
           <br/>
           <br/>
-          <h2>使用index作为key(可能会引发一些问题)</h2>
-          <ul>
-            {
-              persons.map((item, index) => {return <li key={index}>{item.id}--{item.name}--{item.age}--<input type="text"/></li>})
-            }
-          </ul>
         </div>
       )
     }
   }
 
-  ReactDOM.render(
-    <PersonList/>,
-    document.getElementById('root')
-  )
+  ReactDOM.render(<PersonList/>,document.getElementById('root'))
 </script>
 </body>
 </html>
