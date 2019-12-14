@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>10_key</title>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<script type="text/babel">
+
+   /*
+   面试题:
+      1). react/vue中的key的作用（内部原理）
+      2). 为什么列表的key尽量不要用index?
+      
+   1. 虚拟DOM的key的作用?
+      1). 简单的说: key是虚拟DOM对象的标识, 在更新显示时key起着极其重要的作用
+      2). 详细的说: 当状态数据发生变化时，React会生成新的虚拟DOM, 随后React将之前的旧虚拟DOM与新的虚拟DOM进行diff比较
+          
+          a. 旧的虚拟DOM中【找到了】与新的虚拟DOM相同的key
+                --若虚拟DOM没变, 直接使用原来的真实DOM，不刷新页面的真实DOM
+                --若虚拟DOM变了, 先更新虚拟DOM，随后刷新页面的真实DOM
+              
+          b. 旧的虚拟DOM中【未找到】相同的key
+                --根据数据创建新的虚拟DOM，随后渲染真实DOM到页面
+              
+   2. key为index可能会产生的问题
+          1). 添加/删除/排序 => 会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低
+          2). 如果DOM界面还有输入类DOM（输入框、选择框等） ==> 产生错误的真实DOM更新 ==> 界面有问题
+          注意: 如果不存在添加/删除/排序操作，仅用于渲染列表用于展示，使用index作为key没有问题。
+      
+   3. 解决:
+        使用数据的唯一标识数据作为key, 比如id属性值
+   */
+
+  class PersonList extends React.Component {
+
+    state = {
+      persons: [
+        {id: 1, name: '小张', age: 13},
+        {id: 2, name: '小李', age: 12}
+      ]
+    }
+
+		//添加一个小王
+    add = () => {
+      const {persons} = this.state
+      persons.unshift({id: persons.length + 1, name: '小王', age: 14})
+      this.setState({persons})
+    }
+		//移除列表中的第一个人
+    remove = () => {
+      const {persons} = this.state
+      persons.shift()
+      this.setState({persons})
+    }
+
+    render() {
+      const persons = this.state.persons
+      return (
+        <div>
+          <div>
+            <button onClick={this.add}>添加一个【小王】</button>
+            &nbsp;
+            <button onClick={this.remove}>移除第一个</button>
+            &nbsp;
+          </div>
+          <br/>
+          <br/>
+          
+          <h2>使用id作为key</h2>
+          <ul>
+            {
+              persons.map((item) => {return <li key={item.id}>{item.id}--{item.name}--{item.age}--<input type="text"/></li>})
+            }
+          </ul>
+          <br/>
+          <br/>
+          <h2>使用index作为key(可能会引发一些问题)</h2>
+          <ul>
+            {
+              persons.map((item, index) => {return <li key={index}>{item.id}--{item.name}--{item.age}--<input type="text"/></li>})
+            }
+          </ul>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(
+    <PersonList/>,
+    document.getElementById('root')
+  )
+</script>
+</body>
+</html>

@@ -20,7 +20,7 @@
 
 	<script type="text/babel" >
 		class Person extends React.Component{
-			
+
 			static propTypes = {
 				name:PropTypes.string.isRequired, //名字必须为字符串，必须传
 				age:PropTypes.number, //名字必须为字符串，必须传
@@ -47,6 +47,7 @@
 		let person2 = {name:'lisi'}
 
 		//传递标签属性
+		ReactDOM.render(<Person name={person1.name} age={person1.age} sex={person1.sex}/>,document.getElementById('example1'))
 		ReactDOM.render(<Person name={person1.name} age={person1.age} sex={person1.sex}/>,document.getElementById('example1'))
 		ReactDOM.render(<Person {...person2}/>,document.getElementById('example2'))
 	</script>

@@ -39,6 +39,9 @@
 	}
 
 	class Add extends React.Component{
+		componentWillReceiveProps(){
+			console.log('---componentWillReceiveProps---');
+		}
 		static propTypes = {
 			count:PropTypes.number.isRequired,
 			addTodo:PropTypes.func.isRequired,

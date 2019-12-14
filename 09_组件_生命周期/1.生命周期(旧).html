@@ -21,9 +21,25 @@
     2. 切换时间为2S
     3. 点击按钮从界面中移除组件界面（当前组件在页面上消失）
    */
+	 
+	/*
+	1.初始化
+			初始化操作：ReactDOM.render(<MyComponent/>)
+			--constructor()
+			--componentWillMount()
+			--render():提供虚拟DOM，可能会调用多次(1+n)。
+			--componentDidMount()：启动定时器、发送Ajax请求、只执行一次。
+	2.更新
+			更新操作：this.setState({})
+			componentWillUpdate()
+			render()
+			componentDidUpdate()
+	3.卸载:
+			卸载操作：ReactDOM.unmountComponentAtNode()
+			componentWillUnmount()：收尾工作，例如：清除定时器，只执行一次。
+  */
 
 	 class Demo extends React.Component{
-
 		//构造器
 		constructor(pramars){
 			console.log('---constructor---');
@@ -57,9 +73,17 @@
 			console.log('---componentWillUnmount---');
 			clearInterval(this.id)
 		}
-
+		
+		/* shouldComponentUpdate(){
+			return true
+		} */
+		
 		death = ()=>{
 			ReactDOM.unmountComponentAtNode(document.getElementById('example'))
+		}
+
+		force = ()=>{
+			this.forceUpdate()
 		}
 
 	  render(){
@@ -69,6 +93,7 @@
 				 <div>
 					<h1 style={{opacity}}>React学不会怎么办？</h1>
 					<button onClick={this.death}>不活了</button>
+					<button onClick={this.force}>强制更新一下</button>
 				</div>
 			 )
 		 }

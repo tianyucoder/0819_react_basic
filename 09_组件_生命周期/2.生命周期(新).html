@@ -23,39 +23,21 @@
 
   class App extends React.Component{
 
-    state = {data:'React'}
-
-    componentDidMount(){
-      console.log('--componentDidMount--');
-      setTimeout(()=>{
-        this.setState({data:'0719'})
-      },2000)
-    }
-
-    componentDidUpdate(props,state,data){
-      console.log('--componentDidUpdate--',props,state,data);
-    }
-
-    //getDerivedStateFromProps钩子用于取代：componentWillMount、componentWillUpdate
-    static getDerivedStateFromProps(props,state){
-      console.log('--getDerivedStateFromProps--',props,state);
-      //return {data:props.name}
-      return props
-    }
-
-    getSnapshotBeforeUpdate(props,state){
-      console.log('--getSnapshotBeforeUpdate--',props,state);
-      return 'peiqi'
-    }
-
+		UNSAFE_componentWillMount(){
+			console.log('---componentWillMount---');
+		}
 
     render(){
       console.log('--render--');
-      return <h1>Hello,{this.state.data}</h1>
-    }
+      return <h1>Hello,App</h1>
+		}
+		
+		componentDidMount(){
+			console.log('---componentDidMount---');
+		}
   }
 
-  ReactDOM.render(<App name="kobe"/>,document.getElementById('example'))
+  ReactDOM.render(<App/>,document.getElementById('example'))
 </script>
 
 <!-- 
